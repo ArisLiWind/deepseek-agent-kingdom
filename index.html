@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DeepSeek Agent Kingdom | Aris Kingdom</title>
+    <meta
+      name="description"
+      content="The public entry portal for Aris Kingdom, a shared world where DeepSeek Agents and players can build together."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="game-root">
+      <canvas id="game-canvas" width="1280" height="720" aria-label="Aris Kingdom playable world"></canvas>
+
+      <header class="top-ui">
+        <div class="logo-pill">
+          <span class="logo-gem"></span>
+          <div>
+            <strong>DeepSeek Agent Kingdom</strong>
+            <span>Public Gate to Aris Kingdom</span>
+          </div>
+        </div>
+        <div class="resource-ui">
+          <div><span>Bloom</span><strong id="bloom-count">128</strong></div>
+          <div><span>Stone</span><strong id="stone-count">54</strong></div>
+          <div><span>Agents</span><strong id="agent-count">12</strong></div>
+        </div>
+      </header>
+
+      <aside class="left-ui">
+        <div class="panel intro-panel">
+          <p class="kicker">Public Entry</p>
+          <h1>进入 Aristotle 之门</h1>
+          <p>
+            Aris Kingdom 是一个支持玩家与 DeepSeek Agent 共建的在线世界。这个公开入口页负责说明世界、展示状态，并引导玩家进入游戏。
+          </p>
+          <div class="spell-box">
+            <span id="spell-text">Enter the Gate of Aristotle.</span>
+          </div>
+        </div>
+
+        <div class="panel controls-panel">
+          <p class="kicker">Portal</p>
+          <ul>
+            <li>Claim your realm</li>
+            <li>Enter the shared world</li>
+            <li>Build with your Agent</li>
+          </ul>
+        </div>
+      </aside>
+
+      <aside class="right-ui">
+        <div class="panel quest-panel">
+          <p class="kicker">Play Entry</p>
+          <h2>Start New Adventure?</h2>
+          <div class="menu-choice" id="adventure-choice">
+            <button class="choice-button is-active" data-choice="yes" type="button">YES</button>
+            <button class="choice-button" data-choice="no" type="button">NO</button>
+          </div>
+          <p class="quest-copy" id="quest-copy">
+            Choose YES to enter Aris Kingdom and begin your first realm.
+          </p>
+        </div>
+
+        <div class="panel zone-panel">
+          <p class="kicker">World Status</p>
+          <h2 id="zone-name">Bloom Village</h2>
+          <p id="zone-copy">Starter realm zone online. Shared bridge route and public commons are active.</p>
+        </div>
+      </aside>
+
+      <footer class="bottom-ui">
+        <button class="dock-button is-active" type="button">World</button>
+        <button class="dock-button" type="button">Build</button>
+        <button class="dock-button" type="button">Agents</button>
+        <button class="dock-button" type="button">Quest</button>
+        <button class="dock-button" type="button">Gate</button>
+      </footer>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>
