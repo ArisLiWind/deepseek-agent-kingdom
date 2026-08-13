@@ -15,12 +15,12 @@
 
   <link rel="stylesheet" href="./world.css" />
 
-  <!-- Three.js CDN ES module + importmap（r160 min 版，unpkg；可换 jsdelivr） -->
+  <!-- Three.js 本地化（vendor/ 目录，零 CDN 依赖，国内/离线都能跑） -->
   <script type="importmap">
   {
     "imports": {
-      "three": "https://unpkg.com/three@0.160.0/build/three.module.min.js",
-      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      "three": "./vendor/three.module.min.js",
+      "three/addons/": "./vendor/"
     }
   }
   </script>
