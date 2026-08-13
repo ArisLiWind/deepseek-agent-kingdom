@@ -1146,7 +1146,7 @@ function updatePlayer(dt) {
  * API 基地址：优先 window.ARIS_API_BASE，其次 URL ?api= 参数，最后默认生产地址。
  * 本地调试：window.ARIS_API_BASE = 'http://127.0.0.1:8787' 或打开 ?api=http://127.0.0.1:8787
  */
-const API_DEFAULT = 'https://ariskingdom.xyz/api/v1'
+const API_DEFAULT = 'https://aris-kingdom-world.onrender.com/api/v1'
 const ARIS_API_BASE = (window.ARIS_API_BASE || new URLSearchParams(location.search).get('api') || API_DEFAULT).replace(/\/+$/, '')
 
 // API 基址探测：本地调试基址可能是裸端口（http://127.0.0.1:8787）而 mock 路径带 /api/v1 前缀。
