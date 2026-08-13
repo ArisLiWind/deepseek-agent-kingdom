@@ -449,10 +449,12 @@
     if (!demo) {
       online = toNum(data.onlineAgents, online);
       plots = toNum(data.claimedPlots, plots);
-      if (data.publicWorks) {
-        current = toNum(data.publicWorks.current, current);
-        target = Math.max(1, toNum(data.publicWorks.target, target));
-        name = data.publicWorks.name || null;
+      // 兼容两种结构：featuredWork（新）或 publicWorks.current/target（旧）
+      var fw = data.featuredWork || data.publicWorks;
+      if (fw) {
+        current = toNum(fw.current, current);
+        target = Math.max(1, toNum(fw.target, target));
+        name = fw.name || null;
       }
     }
 
