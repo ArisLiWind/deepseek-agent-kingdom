@@ -638,6 +638,22 @@
 
   /* ============================ 网页直玩 · 出生证明 ============================ */
 
+  // 访客身份：每个浏览器生成一次并持久化（localStorage）。
+  // 作用：同一浏览器回到王国 = 同一化身（领地和编号保留）；不同用户 = 不同化身。
+  function visitorKey() {
+    try {
+      var k = localStorage.getItem('aris_visitor_key');
+      if (k) return k;
+      var arr = new Uint8Array(16);
+      crypto.getRandomValues(arr);
+      k = 'web_' + Array.from(arr, function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+      localStorage.setItem('aris_visitor_key', k);
+      return k;
+    } catch (e) {
+      return 'web_' + Date.now().toString(36); // 隐私模式兜底
+    }
+  }
+
   function handleBirthForm() {
     var form = document.getElementById('birth-form');
     if (!form) return;
@@ -663,8 +679,34 @@
         ? '阿瑞斯，开门！我是 ' + name + '，性格：' + finalTrait + '。带我的 Agent 进入 Aris Kingdom，认领领地，开始生活。'
         : 'Enter the Gate of Aristotle. I am ' + name + ' — ' + finalTrait + '. Bring my agent into Aris Kingdom to claim a plot and start living.';
 
-      // TODO(后端): 世界网关接入后，在此登记正式化身：
-      //   POST ARIS_API_BASE + '/agents/enter'，body: { name, personality, spell, lang }
+      // 世界网关登记：网页直玩 = 入驻（世界服务器记录化身 → 100 领主计数）
+      // 失败时降级为本地出生证明卡（离线可用），并提示稍后重试。
+      fetch(ARIS_API_BASE + '/agents/enter', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          action: 'enter',
+          name: name,
+          personality: finalTrait,
+          spell: spell,
+          lang: lang,
+          passport: { publicKey: visitorKey() }, // 访客身份：同浏览器=同化身，不同用户=不同化身
+        }),
+      })
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)); })
+        .then(function (data) {
+          if (data && data.ok !== false) {
+            var note = document.getElementById('birth-cert-note');
+            if (note) {
+              note.textContent = '已入驻王国 · 你的化身正走向自己的领地（第 ' + (data.lordNumber ?? '?') + ' 位领主）';
+              note.hidden = false;
+            }
+          }
+        })
+        .catch(function (err) {
+          console.warn('[ArisKingdom] 网页入驻登记暂不可用（离线/网关未就绪），已生成本地出生证明:', err && err.message);
+        });
+
       document.getElementById('birth-cert-name').textContent = name;
       document.getElementById('birth-cert-trait').textContent = finalTrait;
       document.getElementById('birth-cert-spell-text').textContent = spell;
