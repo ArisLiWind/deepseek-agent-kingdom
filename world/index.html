@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffe9c7" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23ffe9c7'/%3E%3Crect x='2' y='2' width='12' height='12' rx='2' fill='%238ed060' stroke='%233a2e24' stroke-width='2'/%3E%3C/svg%3E" />
+  <title>Aris Kingdom · 体素预览世界</title>
+  <meta name="description" content="Aris Kingdom 可预览可视化体素世界：温暖可爱的 Three.js 方块世界，可漫游、可看 Agent 化身与星门大桥进度。" />
+
+  <!-- 像素风字体（缺失时回退系统字体，不影响功能） -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="./world.css" />
+
+  <!-- Three.js CDN ES module + importmap（r160 min 版，unpkg；可换 jsdelivr） -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.min.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <canvas id="scene" aria-label="Aris Kingdom 体素世界"></canvas>
+
+    <!-- ======================= HUD ======================= -->
+    <div id="hud">
+      <!-- 左上：Logo -->
+      <div class="hud-top-left">
+        <div class="logo">ARIS KINGDOM</div>
+        <div class="logo-sub">体素预览世界 · VOXEL PREVIEW</div>
+      </div>
+
+      <!-- 右上：领主 / 星币 / 在线 / 总数 / 领地 / 公共工程（featuredWork 主进度条） -->
+      <div class="hud-top-right panel">
+        <div class="stat"><span class="stat-label">领主</span><span class="stat-value" id="hud-lord">—</span></div>
+        <div class="stat"><span class="stat-label">星币</span><span class="stat-value" id="hud-coins">—</span></div>
+        <div class="stat"><span class="stat-label">在线</span><span class="stat-value" id="hud-online">—</span></div>
+        <div class="stat"><span class="stat-label">总数</span><span class="stat-value" id="hud-total">—</span></div>
+        <div class="stat"><span class="stat-label">领地</span><span class="stat-value" id="hud-realms">—</span></div>
+        <div class="stat stat-wide">
+          <span class="stat-label" id="hud-bridge-name">星门大桥</span>
+          <span class="stat-bar"><i id="hud-bridge-bar"></i></span>
+          <span class="stat-value stat-pct" id="hud-bridge-pct">—</span>
+        </div>
+        <button id="enter-btn" class="pixel-btn" type="button">入场登记</button>
+      </div>
+
+      <!-- 顶部中央：事件 -->
+      <div class="hud-top-center"><span id="hud-event" class="chip hidden"></span></div>
+
+      <!-- 离线漫游徽章（API 不可用时显示） -->
+      <div id="offline-badge" class="badge hidden">离线漫游</div>
+
+      <!-- 底部：操作提示 -->
+      <div id="hint-bar" class="panel">
+        <span id="hint-desktop">WASD 移动 · 拖拽环视 · 空格跳跃</span>
+        <span id="hint-touch" class="hidden">左半屏摇杆移动 · 右半屏滑动环视</span>
+      </div>
+
+      <div id="coords">x <b id="coord-x">0</b> · z <b id="coord-z">0</b></div>
+
+      <!-- 欢迎 / 提示 toast -->
+      <div id="welcome-toast" class="hidden"></div>
+    </div>
+
+    <!-- ======================= 加载层 ======================= -->
+    <div id="loading">
+      <div class="loading-card">
+        <div class="loading-block"></div>
+        <div class="loading-title">ARIS KINGDOM</div>
+        <div class="loading-sub" id="loading-sub">正在生成体素世界…</div>
+      </div>
+    </div>
+
+    <!-- 致命错误（尽力不触发） -->
+    <div id="fatal" class="hidden"></div>
+  </div>
+
+  <script type="module" src="./game.js"></script>
+</body>
+</html>
